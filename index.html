@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eNull</title>
+<style>
+  .title {
+    text-align: center;
+    font-size: 4em; /* Increased font size */
+    font-weight: 900; /* Maximum font weight */
+    color: black;
+    text-shadow: 0 0 20px black; /* Optional: Add a shadow for emphasis */
+  }
+</style>
+</head>
+<body>
+  <h1 class="title">eNull</h1>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eNull - Rare Items Marketplace</title>
+<style>
+    /* General reset and base styles */
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    
+    /* Container styles */
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Align items to the left */
+        justify-content: center;
+        height: 100vh;
+        padding: 20px; /* Add padding for better spacing */
+    }
+    
+    /* Bubble styles */
+    .bubble {
+        position: absolute;
+        top: 20px; /* Adjust top position */
+        left: 20px; /* Adjust left position */
+        width: 100px;
+        height: 100px;
+        background-color: #f0f0f0;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    
+    .bubble img {
+        width: 110px; /* Updated width */
+        height: 150px; /* Updated height */
+        border-radius: 8px;
+    }
+    
+    .bubble a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+    }
+    
+    /* Dropdown content styles */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        text-align: left; /* Align dropdown content to the left */
+        border-radius: 8px;
+        padding: 10px;
+        left: 0; /* Align dropdown to the left */
+        width: 320px; /* Set a fixed width for dropdown */
+        height: 626px; /* Set a fixed height for dropdown */
+    }
+    
+    .dropdown-content .bubble {
+        margin: 0 auto 20px auto;
+    }
+    
+    .dropdown-content a {
+        color: #333;
+        text-decoration: none;
+        display: block;
+        padding: 8px 0;
+    }
+    
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+    
+    /* Modal styles */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4); /* Overlay background */
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 400px;
+        border-radius: 8px;
+        text-align: center;
+        position: relative;
+    }
+    
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #888;
+        cursor: pointer;
+    }
+    
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+    /* Form input styles */
+    .modal-content input[type="text"],
+    .modal-content input[type="url"],
+    .modal-content input[type="number"] {
+        width: calc(100% - 20px);
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+    
+    .modal-content button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    
+    .modal-content button:hover {
+        background-color: #45a049;
+    }
+    
+    /* Sidebar styles */
+    .sidebar {
+        width: 200px;
+        height: 100%; /* Adjust height to fill the viewport */
+        background-color: #333;
+        position: fixed;
+        left: 0;
+        top: 0;
+        overflow-y: auto; /* Enable scrolling if content exceeds height */
+        padding-top: 20px; /* Add padding to top */
+        color: white;
+    }
+    
+    .sidebar a {
+        padding: 10px;
+        display: block;
+        color: white;
+        text-decoration: none;
+    }
+    
+    .sidebar a:hover {
+        background-color: #555;
+    }
+    
+    /* Content area styles */
+    .content {
+        margin-left: 220px; /* Adjust content margin to accommodate sidebar */
+        padding: 20px;
+    }
+    
+    .content h1 {
+        color: #333;
+    }
+    
+    /* Listing item styles */
+    .ad_itm {
+        width: 728px;
+        height: 120px;
+        background-color: #f0f0f0;
+        margin-top: 20px;
+        display: flex;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .img_itm {
+        position: relative;
+        width: 150px;
+        height: 120px;
+        overflow: hidden;
+    }
+    
+    .img_itm img {
+        width: 150px;
+        height: 110px;
+        object-fit: cover;
+    }
+    
+    .info_tag_abs {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    .txt_itm {
+        padding: 0 20px;
+        flex: 1;
+    }
+    
+    .txt_itm_desc {
+        margin-top: 10px;
+    }
+    
+    .sccd_itm {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        font-size: 18px;
+        color: rgb(101,152,74);
+        margin-top: 10px;
+    }
+    
+    .sccd_itm span {
+        margin-top: -2px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sign Up Button -->
+    <button onclick="promptEmail()">Sign Up</button>
+
+    <!-- Bubble with Dropdown Menu -->
+    <div class="bubble" id="emailDisplay" onclick="toggleDropdown()">
+        <span id="emailText">Email</span>
+        <div class="dropdown-content" id="dropdownMenu">
+            <div class="bubble" onclick="uploadProfilePicture(event)">
+                <img id="profilePic" src="placeholder.png" alt="Profile Picture">
+            </div>
+            <a href="#" onclick="showAccountInfo()">Account Information</a>
+            <a href="#" onclick="goToAccount()">Go to Account</a>
+            <a href="#" onclick="deleteAccount()">Delete Account</a>
+            <a href="#" onclick="openPage('personalized')">Personalized Experience</a>
+            <a href="#" onclick="openPage('account')">Account Management</a>
+            <a href="#" onclick="openPage('communication')">Direct Communication</a>
+            <a href="#" onclick="openPage('updates')">Timely Updates</a>
+            <a href="#" onclick="openPage('transactions')">Secure Transactions</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="#" onclick="promptItemDetails('Rare Artifacts')">Rare Artifacts</a>
+    <a href="#" onclick="promptItemDetails('Antique Collectibles')">Antique Collectibles</a>
+    <a href="#" onclick="promptItemDetails('Vintage Books')">Vintage Books</a>
+    <a href="#" onclick="promptItemDetails('Historical Memorabilia')">Historical Memorabilia</a>
+    <a href="#" onclick="promptItemDetails('Unique Jewelry')">Unique Jewelry</a>
+    <a href="#" onclick="promptItemDetails('Curated Art Pieces')">Curated Art Pieces</a>
+    <a href="#" onclick="promptItemDetails('Rare Coins')">Rare Coins</a>
+    <a href="#" onclick="promptItemDetails('Specialty Stamps')">Specialty Stamps</a>
+    <a href="#" onclick="promptItemDetails('Limited Edition Items')">Limited Edition Items</a>
+    <a href="#" onclick="promptItemDetails('Featured Collections')">Featured Collections</a>
+    <!-- Add more links as needed -->
+</div>
+
+<!-- Main Content -->
+<div class="content">
+    <!-- Modal for entering item details -->
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Enter Item Details</h2>
+            <input type="text" id="itemNameInput" placeholder="Item Name"><br>
+            <input type="text" id="itemDescInput" placeholder="Item Description"><br>
+            <input type="url" id="itemImgInput" placeholder="Image URL"><br>
+            <input type="number" id="itemPriceInput" placeholder="Item Price"><br>
+            <button onclick="addItemToListing()">Add Item</button>
+        </div>
+    </div>
+
+    <!-- Sample Listing Container -->
+    <div id="listingContainer">
+        <!-- Listing items will be dynamically added here -->
+    </div>
+</div>
+
+<script>
+    // Sample items array (replace with actual data)
+    var sampleItems = [
+        { title: "Rare Artifact", description: "Rare and ancient artifact.", imageUrl: "artifact.jpg", price: "$500.00" },
+        { title: "Antique Collectible", description: "Rare collectible item.", imageUrl: "collectible.jpg", price: "$300.00" },
+        { title: "Vintage Book", description: "Rare vintage book.", imageUrl: "book.jpg", price: "$150.00" },
+        { title: "Historical Memorabilia", description: "Historical artifacts.", imageUrl: "memorabilia.jpg", price: "$700.00" },
+        { title: "Unique Jewelry", description: "Handcrafted jewelry.", imageUrl: "jewelry.jpg", price: "$250.00" }
+        // Add more sample items as needed
+    ];
+
+    // Function to prompt item details based on category
+    function promptItemDetails(categoryName) {
+        var modal = document.getElementById("itemModal");
+        modal.style.display = "block";
+    }
+
+    // Function to close the modal
+    function closeModal() {
+        var modal = document.getElementById("itemModal");
+        modal.style.display = "none";
+    }
+
+    // Function to add item to the listing
+    function addItemToListing() {
+        var itemName = document.getElementById("itemNameInput").value;
+        var itemDesc = document.getElementById("itemDescInput").value;
+        var itemImg = document.getElementById("itemImgInput").value;
+        var itemPrice = document.getElementById("itemPriceInput").value;
+
+        // Create item object
+        var newItem = {
+            title: itemName,
+            description: itemDesc,
+            imageUrl: itemImg,
+            price: itemPrice
+        };
+
+        // Add item to sampleItems array (for demonstration)
+        sampleItems.push(newItem);
+
+        // Add item to listing container (for demonstration)
+        var container = document.getElementById("listingContainer");
+        var itemDiv = document.createElement("div");
+        itemDiv.classList.add("ad_itm");
+
+        itemDiv.innerHTML = `
+            <div class="img_itm">
+                <div style="height:100%;width:100%;position:relative;">
+                    <a href="#" title="${newItem.title}" class="bl_fnt">
+                        <img class="oic_img" width="150" height="110" border="0" src="${newItem.imageUrl}" alt="${newItem.title}">
+                    </a>
+                </div>
+            </div>
+            <div class="txt_itm">
+                <a href="#" title="${newItem.title}" class="bl_fnt">
+                    <strong>${newItem.title}</strong>
+                </a>
+                <p class="txt_itm_desc">${newItem.description}</p>
+                <div class="sccd_itm">
+                    <span class="txt_itm_desc">${newItem.price}</span>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(itemDiv);
+
+        // Close modal after adding item
+        closeModal();
+    }
+
+    // Sample function for demonstration purposes
+    function promptEmail() {
+        alert('Please sign up using your email to access exclusive features.');
+    }
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eNull - Rare Items Website</title>
+<style>
+    /* Center footer text */
+    footer {
+        text-align: center;
+        margin-top: 20px; /* Adjust as needed */
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var yearSpan = document.getElementById("copyright-year");
+        if (yearSpan) {
+            // Function to update the copyright year
+            function updateYear() {
+                var currentYear = new Date().getFullYear();
+                yearSpan.textContent = currentYear;
+            }
+            
+            // Initial update
+            updateYear();
+
+            // Update every second for precision, adjust as needed
+            setInterval(function() {
+                updateYear();
+            }, 1000 * 60 * 60 * 24); // Update every day (86400000 milliseconds)
+
+            // Optionally, update every minute for testing
+            // setInterval(updateYear, 1000 * 60); // Update every minute
+        }
+    });
+</script>
+</head>
+<body>
+    <footer>
+        <p>&copy; <span id="copyright-year">2024</span>
+        Copyrighted eNull. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+
+
+
+
+
+
